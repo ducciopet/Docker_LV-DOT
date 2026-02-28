@@ -25,7 +25,6 @@ This setup runs in a **Docker container** with NVIDIA GPU support for YOLO infer
 Docker_LV-DOT/
 ├── src/                          # ROS2 workspace source
 │   └── onboard_detector/        # Main detector package
-├── src_ROS1/                    # Original ROS1 reference code
 ├── bags/                        # ROS2 bag files
 │   └── corridor_demo_mcap/     # MCAP format bag
 ├── DockerFiles/                 # Docker configuration
@@ -39,9 +38,11 @@ Docker_LV-DOT/
 ### 1. Clone the Repository
 
 ```bash
-git clone <repository-url>
+git clone https://github.com/ducciopet/Docker_LV-DOT.git
 cd Docker_LV-DOT
 ```
+
+**Note:** The ROS2 bag files are not included in this repository due to GitHub's file size limits (bags are ~4GB). You'll need to obtain them separately or record your own bag files with the required topics.
 
 ### 2. Build the Docker Image
 
