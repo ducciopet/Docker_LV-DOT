@@ -1,6 +1,6 @@
 # LV-DOT: Light-Weight Visual Dynamic Obstacle Tracker (ROS2 Port)
 
-![ROS2](https://img.shields.io/badge/ROS-2%20Humble-green) ![Linux](https://img.shields.io/badge/Platform-Linux-orange) ![License](https://img.shields.io/badge/License-MIT-blue)
+![ROS2](https://img.shields.io/badge/ROS-2%20Humble-green) ![Ubuntu](https://img.shields.io/badge/Ubuntu-22.04-blue) ![Linux](https://img.shields.io/badge/Platform-Linux-orange) ![License](https://img.shields.io/badge/License-MIT-blue)
 
 ## Introduction
 This repository contains the **ROS2 Humble** port of the LV-DOT dynamic obstacle detection and tracking system. The original implementation can be found at https://github.com/Zhefan-Xu/LV-DOT
