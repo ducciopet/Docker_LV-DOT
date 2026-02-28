@@ -42,7 +42,25 @@ git clone https://github.com/ducciopet/Docker_LV-DOT.git
 cd Docker_LV-DOT
 ```
 
-**Note:** The ROS2 bag files are not included in this repository due to GitHub's file size limits (bags are ~4GB). You'll need to obtain them separately or record your own bag files with the required topics.
+**Note:** The ROS2 bag files are not included in this repository due to GitHub's file size limits (bags are ~4GB).
+
+**Download Demo Bag File:**
+The author's original bag file can be downloaded from:
+https://cmu.app.box.com/s/cucvje5b9xfpdpe57ilh0jx702b3ks2p
+
+After downloading, convert it to MCAP format and reindex:
+```bash
+# Create bags directory if it doesn't exist
+mkdir -p bags
+
+# Convert the downloaded bag to MCAP format
+ros2 bag convert -i <downloaded_bag_file> -o bags/corridor_demo_mcap -s mcap
+
+# Reindex the MCAP bag for faster playback
+ros2 bag reindex bags/corridor_demo_mcap -s mcap
+```
+
+Alternatively, record your own bag files with the required topics (see [Key Topics](#key-topics) section).
 
 ### 2. Build the Docker Image
 
