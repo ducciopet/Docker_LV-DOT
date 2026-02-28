@@ -22,7 +22,7 @@ This setup runs in a **Docker container** with NVIDIA GPU support for YOLO infer
 ## Repository Structure
 
 ```
-LV-DOT_ROS2/
+Docker_LV-DOT/
 ├── src/                          # ROS2 workspace source
 │   └── onboard_detector/        # Main detector package
 ├── src_ROS1/                    # Original ROS1 reference code
@@ -40,7 +40,7 @@ LV-DOT_ROS2/
 
 ```bash
 git clone <repository-url>
-cd LV-DOT_ROS2
+cd Docker_LV-DOT
 ```
 
 ### 2. Build the Docker Image
@@ -80,7 +80,7 @@ Inside the container:
 
 ```bash
 cd ~/ros2_ws
-colcon build --packages-select onboard_detector
+colcon build 
 source install/setup.bash
 ```
 
@@ -160,10 +160,6 @@ ros2 bag record -o my_bag /topic1 /topic2
 # Launch with default parameters
 ros2 launch onboard_detector run_detector.launch.py
 
-# Launch with custom RViz config
-ros2 launch onboard_detector run_detector.launch.py rviz_config:=detector_lv.rviz
-```
-
 ## Key Topics
 
 ### Published by Detector
@@ -214,33 +210,10 @@ Key parameters:
 - Check Fixed Frame is set correctly (usually `map` or `local_origin`)
 - Enable markers in Displays panel
 
-## Differences from ROS1
-
-Key changes in the ROS2 port:
-
-1. **Publishers/Subscribers:** 
-   - ROS1: `ros::Publisher`, `nh_.advertise()`
-   - ROS2: `rclcpp::Publisher<>::SharedPtr`, `create_publisher<>()`
-
-2. **Launch Files:**
-   - ROS1: `.launch` XML format
-   - ROS2: `.launch.py` Python format
-
-3. **Bag Files:**
-   - ROS1: `.bag` format
-   - ROS2: `.db3` or `.mcap` format with metadata.yaml
-
-4. **Image Transport:**
-   - Removed `image_transport` to eliminate compressed topic duplicates
-   - Using standard `sensor_msgs::msg::Image` publishers
-
-5. **Time:**
-   - ROS1: `ros::Time::now()`
-   - ROS2: `this->now()` or `this->get_clock()->now()`
-
 ## Citation
 
-If you use this work, please cite the original LV-DOT paper:
+This repository is a **ROS2 version** of the work presented in the LV-DOT paper. If you use this work, please cite the original paper:
+
 ```bibtex
 @article{xu2022lvdot,
   title={LV-DOT: Light-Weight Visual Dynamic Obstacle Tracker},
@@ -256,6 +229,5 @@ See LICENSE file for details.
 
 ## References
 
-- Original ROS1 code: `src_ROS1/`
 - ROS2 Migration Guide: https://docs.ros.org/en/humble/
 - Ultralytics YOLO: https://docs.ultralytics.com/
