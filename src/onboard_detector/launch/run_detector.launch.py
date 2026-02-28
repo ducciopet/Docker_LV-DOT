@@ -1,0 +1,69 @@
+#!/usr/bin/env python3
+
+from launch import LaunchDescription
+from launch_ros.actions import Node
+from launch_ros.substitutions import FindPackageShare
+from ament_index_python.packages import get_package_share_directory
+import os
+from launch.substitutions import LaunchConfiguration
+from launch_ros.descriptions import ParameterFile
+from launch.actions import DeclareLaunchArgument, SetEnvironmentVariable
+from launch_ros.substitutions import FindPackageShare
+from pathlib import Path
+
+def generate_launch_description():
+    pkg_dir = get_package_share_directory('onboard_detector')
+    
+    # Path to parameters file
+    config_file = os.path.join(pkg_dir, 'cfg', 'detector_param.yaml')
+    
+    # Path to rviz config file
+    rviz_config_file = os.path.join(pkg_dir, 'rviz', 'detector_working.rviz')
+    
+    # Add scripts directory to Python path for yolo imports
+    scripts_dir = os.path.join(pkg_dir, 'scripts')
+    yolo_dir = os.path.join(scripts_dir, 'yolo_detector')
+    
+    # Set ROS_DOMAIN_ID if needed and PYTHONPATH
+    pythonpath_action = SetEnvironmentVariable(
+        'PYTHONPATH',
+        yolo_dir + os.pathsep + scripts_dir + os.pathsep + os.environ.get('PYTHONPATH', '')
+    )
+    
+    return LaunchDescription([
+        pythonpath_action,
+        
+        # Load parameters from YAML file
+        Node(
+            package='onboard_detector',
+            executable='detector_node',
+            name='detector_node',
+            output='screen',
+            parameters=[
+                ParameterFile(config_file, allow_substs=True),
+                {'use_sim_time': True},
+            ],
+            remappings=[
+                # Uncomment and adjust if bag uses different topic names:
+                # ('/pointcloud', '/actual_lidar_topic'),
+            ],
+        ),
+        
+        # YOLO v11 detector node
+        Node(
+            package='onboard_detector',
+            executable='yolov11_detector_node.py',
+            name='yolov11_detector_node',
+            output='screen',
+            parameters=[{'use_sim_time': True}],
+        ),
+        
+        # RViz visualization (optional - comment out if not needed)
+        Node(
+            package='rviz2',
+            executable='rviz2',
+            name='rviz2',
+            output='screen',
+            arguments=['-d', rviz_config_file],
+        ),
+    ])
