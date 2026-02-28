@@ -1,7 +1,7 @@
 # LV-DOT: Light-Weight Visual Dynamic Obstacle Tracker (ROS2 Port)
 
 ## Introduction
-This repository contains the **ROS2 Humble** port of the LV-DOT dynamic obstacle detection and tracking system. The original ROS1 implementation can be found in the `src_ROS1/` directory.
+This repository contains the **ROS2 Humble** port of the LV-DOT dynamic obstacle detection and tracking system. The original implementation can be found at https://github.com/Zhefan-Xu/LV-DOT
 
 LV-DOT integrates:
 - **YOLO v11** person detection
@@ -248,5 +248,6 @@ See LICENSE file for details.
 
 ## References
 
+- Original LV-DOT Repository: https://github.com/Zhefan-Xu/LV-DOT
 - ROS2 Migration Guide: https://docs.ros.org/en/humble/
 - Ultralytics YOLO: https://docs.ultralytics.com/
