@@ -189,6 +189,12 @@ void dynamicDetector::detectionCB() {
 
 ### Key Parameters
 
+#### Localization Mode
+- **localization_mode**: 0 (default: pose-based) or 1 (odometry-based)
+  - Mode 0: Uses PoseStamped from `/mavros/local_position/pose`
+  - Mode 1: Uses Odometry from `/mavros/local_position/odom`
+  - Both use ApproximateTime sync with sensor data
+
 #### Camera
 - **Depth intrinsics**: fx=385.31, fy=385.31, cx=324.80, cy=237.72
 - **Color intrinsics**: fx=606.31, fy=605.93, cx=314.69, cy=252.19
@@ -733,11 +739,25 @@ if (this->boxHist_[i][0].is_human) {
 ## ROS2 TOPICS
 
 ### Input Topics
-- `/camera/depth/image_rect_raw` - Depth image (sensor_msgs/Image)
-- `/camera/color/image_raw` - Color image (sensor_msgs/Image)
-- `/pointcloud` - LiDAR pointcloud (sensor_msgs/PointCloud2)
-- `/mavros/local_position/pose` - Robot pose (geometry_msgs/PoseStamped)
-- `yolo_detector/detected_bounding_boxes` - YOLO detections (vision_msgs/Detection2DArray)
+
+#### Synchronized Sensor + Localization Pairs
+- **Depth Image (ApproximateTime Sync)**:
+  - `/camera/depth/image_rect_raw` (sensor_msgs/Image)
+  - Synchronized with **either**:
+    - `/mavros/local_position/pose` (geometry_msgs/PoseStamped) when `localization_mode: 0`
+    - `/mavros/local_position/odom` (nav_msgs/Odometry) when `localization_mode: 1`
+
+- **LiDAR PointCloud (ApproximateTime Sync)**:
+  - `/pointcloud` (sensor_msgs/PointCloud2)
+  - Synchronized with **either**:
+    - `/mavros/local_position/pose` (geometry_msgs/PoseStamped) when `localization_mode: 0`
+    - `/mavros/local_position/odom` (nav_msgs/Odometry) when `localization_mode: 1`
+
+#### Independent Sensor Inputs
+- `/camera/color/image_raw` - Color image for YOLO and visualization (sensor_msgs/Image)
+
+#### AI/ML Input
+- `yolo_detector/detected_bounding_boxes` - YOLO person detections (vision_msgs/Detection2DArray)
 
 ### Output Topics (Detection)
 - `onboard_detector/filtered_bboxes_before_yolo` - Bounding boxes after LV fusion, before YOLO
